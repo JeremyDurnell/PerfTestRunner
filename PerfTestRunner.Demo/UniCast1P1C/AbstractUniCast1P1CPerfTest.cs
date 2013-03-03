@@ -1,4 +1,5 @@
-using Disruptor.PerfTests.Runner;
+using PerfTestRunner.Common;
+using PerfTestRunner.Common.Runner;
 using PerfTestRunner.Demo.Support;
 
 namespace Disruptor.PerfTests.UniCast1P1C

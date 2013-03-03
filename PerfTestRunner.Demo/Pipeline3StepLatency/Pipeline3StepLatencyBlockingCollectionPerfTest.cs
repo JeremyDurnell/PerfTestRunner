@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using Disruptor.PerfTests.Support;
 using NUnit.Framework;
-using Disruptor.PerfTests.Runner;
+using PerfTestRunner.Common.Runner;
 
 namespace Disruptor.PerfTests.Pipeline3StepLatency
 {

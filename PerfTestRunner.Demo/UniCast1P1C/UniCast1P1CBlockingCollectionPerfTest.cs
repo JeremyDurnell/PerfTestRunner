@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Disruptor.PerfTests.Support;
 using NUnit.Framework;
-using Disruptor.PerfTests.Runner;
+using PerfTestRunner.Common.Runner;
 
 namespace Disruptor.PerfTests.UniCast1P1C
 {

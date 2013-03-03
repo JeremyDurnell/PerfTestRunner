@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Text;
 
-namespace Disruptor.PerfTests.Runner
+namespace PerfTestRunner.Common.Runner
 {
     internal class ThroughputTestRun : TestRun
     {

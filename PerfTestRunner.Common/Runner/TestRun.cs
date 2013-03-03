@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Disruptor.PerfTests.Runner
+namespace PerfTestRunner.Common.Runner
 {
     public abstract class TestRun
     {

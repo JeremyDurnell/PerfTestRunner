@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
+using System.Runtime.Serialization;
 
-namespace Disruptor.PerfTests.Runner
+namespace PerfTestRunner.Common.Runner
 {
-    using System.Runtime.Serialization;
-
     public sealed class LatencyTestRun : TestRun
     {
         private readonly LatencyPerfTest _latencyPerfTest;

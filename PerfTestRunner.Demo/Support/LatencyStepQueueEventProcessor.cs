@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using Disruptor.Collections;
+using PerfTestRunner.Common.Runner;
 
 namespace Disruptor.PerfTests.Support
 {

@@ -1,7 +1,7 @@
-namespace Disruptor.PerfTests.Runner
-{
-    using System;
+using System;
 
+namespace PerfTestRunner.Common.Runner
+{
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class ImplementationTypeAttribute : Attribute
     {

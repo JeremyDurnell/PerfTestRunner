@@ -1,7 +1,7 @@
 using System;
-using Disruptor.PerfTests.Runner;
+using PerfTestRunner.Common.Runner;
 
-namespace Disruptor.PerfTests
+namespace PerfTestRunner.Common
 {
     public abstract class ThroughputPerfTest : PerfTest
     {

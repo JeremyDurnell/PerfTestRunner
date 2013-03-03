@@ -1,3 +1,5 @@
+using PerfTestRunner.Common;
+
 namespace Disruptor.PerfTests.UniCast1P1C
 {
     public abstract class AbstractUniCast1P1CPerfTest : ThroughputPerfTest

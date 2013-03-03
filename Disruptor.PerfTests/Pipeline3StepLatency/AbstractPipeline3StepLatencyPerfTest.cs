@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
-using Disruptor.Collections;
+using PerfTestRunner.Common;
+using PerfTestRunner.Common.Runner;
 
 namespace Disruptor.PerfTests.Pipeline3StepLatency
 {

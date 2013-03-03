@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using PerfTestRunner.Common;
+using PerfTestRunner.Common.Runner;
 
 namespace Disruptor.PerfTests.Runner
 {

@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text;
 using System.Threading;
 
-namespace Disruptor.Collections
+namespace PerfTestRunner.Common.Runner
 {
     /// <summary>
     /// Histogram for tracking the frequency of observations of values below interval upper bounds.
