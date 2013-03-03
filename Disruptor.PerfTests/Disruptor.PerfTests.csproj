@@ -50,8 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LatencyPerfTest.cs" />
-    <Compile Include="PerfTest.cs" />
     <Compile Include="Pipeline3StepLatency\AbstractPipeline3StepLatencyPerfTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -61,21 +59,16 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runner\ComputerSpecifications.cs" />
-    <Compile Include="Runner\Histogram.cs" />
     <Compile Include="Runner\Implementation.cs" />
     <Compile Include="Runner\ImplementationType.cs" />
-    <Compile Include="Runner\LatencyTestRun.cs" />
     <Compile Include="Runner\PerformanceTestSession.cs" />
     <Compile Include="Runner\Scenario.cs" />
     <Compile Include="Runner\ScenarioType.cs" />
-    <Compile Include="Runner\TestRun.cs" />
-    <Compile Include="Runner\ThroughputTestRun.cs" />
     <Compile Include="Support\FunctionStep.cs" />
     <Compile Include="Support\LatencyStepQueueEventProcessor.cs" />
     <Compile Include="Support\ValueAdditionQueueEventProcessor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ThroughputPerfTest.cs" />
     <Compile Include="UniCast1P1C\AbstractUniCast1P1CPerfTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -88,6 +81,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PerfTestRunner.Common\PerfTestRunner.Common.csproj">
+      <Project>{E59D95A2-B60B-404A-A176-3C11B7A4CED9}</Project>
+      <Name>PerfTestRunner.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

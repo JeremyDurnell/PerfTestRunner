@@ -1,7 +1,5 @@
 namespace Disruptor.PerfTests.Runner
 {
-    using System;
-
     public enum ScenarioType
     {
         All = 0,
@@ -12,16 +10,5 @@ namespace Disruptor.PerfTests.Runner
         DiamondPath1P3C = 5,
         Pipeline3StepLatency = 6,
         UniCast1P1CBatch = 7
-    }
-
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class ScenarioTypeAttribute : Attribute
-    {
-        public ScenarioTypeAttribute(string desc)
-        {
-            Description = desc;
-        }
-
-        public string Description { get; private set; }
     }
 }
