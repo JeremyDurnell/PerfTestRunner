@@ -1,4 +1,4 @@
-namespace Disruptor.PerfTests.Support
+namespace PerfTestRunner.Demo.Support
 {
     public enum FunctionStep
     {

@@ -2,14 +2,12 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Disruptor.PerfTests.Support;
 using NUnit.Framework;
 using PerfTestRunner.Common.Runner;
+using PerfTestRunner.Demo.Support;
 
-namespace Disruptor.PerfTests.UniCast1P1C
+namespace PerfTestRunner.Demo.UniCast1P1C
 {
-    using PerfTestRunner.Demo.Support;
-
     [ImplementationType(ImplementationTypes.BlockingCollection)]
     [TestFixture]
     public class UniCast1P1CBlockingCollectionPerfTest : AbstractUniCast1P1CPerfTest

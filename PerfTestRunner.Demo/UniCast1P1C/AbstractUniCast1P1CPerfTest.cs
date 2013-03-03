@@ -2,7 +2,7 @@ using PerfTestRunner.Common;
 using PerfTestRunner.Common.Runner;
 using PerfTestRunner.Demo.Support;
 
-namespace Disruptor.PerfTests.UniCast1P1C
+namespace PerfTestRunner.Demo.UniCast1P1C
 {
     [ScenarioType(ScenarioTypes.UniCast1P1C)]
     public abstract class AbstractUniCast1P1CPerfTest : ThroughputPerfTest

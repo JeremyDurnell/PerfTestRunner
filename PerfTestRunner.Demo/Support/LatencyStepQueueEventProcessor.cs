@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using PerfTestRunner.Common.Runner;
 
-namespace Disruptor.PerfTests.Support
+namespace PerfTestRunner.Demo.Support
 {
     public class LatencyStepQueueEventProcessor
     {

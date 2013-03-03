@@ -2,12 +2,10 @@ using System;
 using System.Diagnostics;
 using PerfTestRunner.Common;
 using PerfTestRunner.Common.Runner;
+using PerfTestRunner.Demo.Support;
 
-
-namespace Disruptor.PerfTests.Pipeline3StepLatency
+namespace PerfTestRunner.Demo.Pipeline3StepLatency
 {
-    using PerfTestRunner.Demo.Support;
-
     [ScenarioType(ScenarioTypes.Pipeline3StepLatency)]
     public abstract class AbstractPipeline3StepLatencyPerfTest :LatencyPerfTest
     {

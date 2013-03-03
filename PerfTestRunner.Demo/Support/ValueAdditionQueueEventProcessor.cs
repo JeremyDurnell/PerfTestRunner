@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 
-namespace Disruptor.PerfTests.Support
+namespace PerfTestRunner.Demo.Support
 {
     public class ValueAdditionQueueEventProcessor
     {

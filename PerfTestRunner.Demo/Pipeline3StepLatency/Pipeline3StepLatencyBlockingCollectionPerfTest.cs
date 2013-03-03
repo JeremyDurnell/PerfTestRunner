@@ -1,14 +1,12 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
-using Disruptor.PerfTests.Support;
 using NUnit.Framework;
 using PerfTestRunner.Common.Runner;
+using PerfTestRunner.Demo.Support;
 
-namespace Disruptor.PerfTests.Pipeline3StepLatency
+namespace PerfTestRunner.Demo.Pipeline3StepLatency
 {
-    using PerfTestRunner.Demo.Support;
-
     [ImplementationType(ImplementationTypes.BlockingCollection)]
     [TestFixture]
     public sealed class Pipeline3StepLatencyBlockingCollectionPerfTest:AbstractPipeline3StepLatencyPerfTest
