@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using PerfTestRunner.Common;
+using PerfTestRunner.Common.Runner;
 
 namespace Disruptor.PerfTests.Runner
 {
@@ -29,7 +31,6 @@ namespace Disruptor.PerfTests.Runner
             _pluginBaseType = interopAssembly.GetType(typeof(PerfTest).FullName);
         }
 
-        // TODO: Move factory method (anti-pattern) to a factory class
         /// <summary>
         /// Returns the name and assembly name of qualifying plugin classes found in assemblies within the designated plugin directory.
         /// </summary>
@@ -42,16 +43,16 @@ namespace Disruptor.PerfTests.Runner
             {
                 domain = AppDomain.CreateDomain("Discovery Domain");
 
-                var finder = (PluginFinder)domain.CreateInstanceAndUnwrap(typeof(PluginFinder).Assembly.FullName
-                    , typeof(PluginFinder).FullName
-                    , false
-                    , 0
-                    , null
-                    , new object[] { pluginPath }
-                    , null
-                    , null);
+                var finder1 = (PluginFinder) domain.CreateInstanceAndUnwrap(typeof (PluginFinder).Assembly.FullName
+                                                                            , typeof (PluginFinder).FullName
+                                                                            , false
+                                                                            , 0
+                                                                            , null
+                                                                            , new object[] {pluginPath}
+                                                                            , null
+                                                                            , null);
 
-                return finder.Find();
+                return finder1.Find();
             }
             finally
             {
@@ -78,13 +79,19 @@ namespace Disruptor.PerfTests.Runner
                 {
                     var assembly = Assembly.LoadFrom(file);
 
-                    foreach (var type in assembly.GetExportedTypes())
+                    foreach (var type in assembly
+                        .GetExportedTypes()
+                        .Where(type => !type.Equals(_pluginBaseType) 
+                            && _pluginBaseType.IsAssignableFrom(type) 
+                            && !type.IsAbstract))
                     {
-                        if (!type.Equals(_pluginBaseType) &&
-                            _pluginBaseType.IsAssignableFrom(type) && !type.IsAbstract)
+                        var attributes = type.GetCustomAttributes(true).Where(a =>
                         {
-                            result.Add(new TypeLocator(assembly.FullName, type.FullName));
-                        }
+                            Type attribType = a.GetType();
+                            return attribType.BaseType != null && attribType.BaseType.FullName == typeof(PerfTestAttribute).FullName;
+                        }).Cast<Attribute>().ToArray();
+
+                        result.Add( new TypeLocator(assembly.FullName, type.FullName, attributes) );
                     }
                 }
                 catch (Exception e)
@@ -108,15 +115,18 @@ namespace Disruptor.PerfTests.Runner
         /// </summary>
         /// <param name="assemblyName">The name of the assembly containing the target type.</param>
         /// <param name="typeName">The name of the target type.</param>
+        /// <param name="attributes">Custom attributes present on type.</param>
         public TypeLocator(
             string assemblyName,
-            string typeName)
+            string typeName, 
+            Attribute[] attributes)
         {
             if (string.IsNullOrEmpty(assemblyName)) throw new ArgumentNullException("assemblyName");
             if (string.IsNullOrEmpty(typeName)) throw new ArgumentNullException("typeName");
 
             AssemblyName = assemblyName;
             TypeName = typeName;
+            Attributes = attributes;
         }
 
         /// <summary>
@@ -128,5 +138,7 @@ namespace Disruptor.PerfTests.Runner
         /// Gets the name of the target type.
         /// </summary>
         public string TypeName { get; private set; }
+
+        public Attribute[] Attributes { get; set; }
     }
 }

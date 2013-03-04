@@ -52,6 +52,7 @@
     <Compile Include="Runner\Histogram.cs" />
     <Compile Include="Runner\ImplementationTypeAttribute.cs" />
     <Compile Include="Runner\LatencyTestRun.cs" />
+    <Compile Include="Runner\PerfTestAttribute.cs" />
     <Compile Include="Runner\ScenarioTypeAttribute.cs" />
     <Compile Include="Runner\TestRun.cs" />
     <Compile Include="Runner\ThroughputTestRun.cs" />

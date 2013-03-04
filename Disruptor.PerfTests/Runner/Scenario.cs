@@ -1,27 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
-using Enumerable = System.Linq.Enumerable;
+using PerfTestRunner.Common.Runner;
 
 namespace Disruptor.PerfTests.Runner
 {
-    public class Scenario
+    internal class Scenario
     {
         private readonly IList<Implementation> _implementations = new List<Implementation>();
 
-        public Scenario(string scenarioName, ImplementationType implementationType, int runs, int numberOfCores)
+        public Scenario(ScenarioTypeAttribute scenario, int numberOfCores, Config config)
         {
-            if (implementationType == ImplementationType.All)
+            if (config.Implementation == null)
             {
-                foreach (var implementationName in Enumerable.Where(Enum.GetNames(typeof(ImplementationType)), s => s != "All"))
+                foreach (var implementation in config.KnownImplementations)
                 {
-                    _implementations.Add(new Implementation(scenarioName, implementationName, runs, numberOfCores));
+                    _implementations.Add(new Implementation(scenario, implementation, (int) config.Runs, numberOfCores, config));
                 }
             }
             else
             {
-                string implementationName = implementationType.ToString();
-                _implementations.Add(new Implementation(scenarioName, implementationName, runs, numberOfCores));
+                _implementations.Add(new Implementation(scenario, config.Implementation, (int)config.Runs, numberOfCores, config));
             }
         }
 

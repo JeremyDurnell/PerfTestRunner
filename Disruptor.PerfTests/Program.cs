@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Security;
-using System.Security.Policy;
+using System.Linq;
 using Disruptor.PerfTests.Runner;
-using PerfTestRunner.Common;
+using PerfTestRunner.Common.Runner;
 
 namespace Disruptor.PerfTests
 {
@@ -13,113 +11,116 @@ namespace Disruptor.PerfTests
     {
         static void Main(string[] args)
         {
-            var domains = new List<AppDomain>();
-            var plugins = new List<PerfTest>();
             string pluginPath = @"C:\temp2\Disruptor.PerfTests\PerfTestRunner.Demo\bin\Debug";
-            var types = PluginFinder.FindPlugins(pluginPath);
+            IList<TypeLocator> types = PluginFinder.FindPlugins(pluginPath).ToList();
+            var distinctAttributes = types.SelectMany(t => t.Attributes).Distinct().ToArray();
+            var distinctScenarios = distinctAttributes.Where(a => a is ScenarioTypeAttribute).Cast<ScenarioTypeAttribute>().ToArray();
+            var distinctImplementations = distinctAttributes.Where(a => a is ImplementationTypeAttribute).Cast<ImplementationTypeAttribute>().ToArray();
 
-            foreach (var type in types)
+            if (args != null && args.Length > 0 && (char.ToLowerInvariant(args[0][0]) == 'h'))
             {
-                var domain = CreateSandboxDomain("Sandbox Domain", pluginPath, SecurityZone.Internet);
-                plugins.Add((PerfTest)domain.CreateInstanceAndUnwrap(type.AssemblyName, type.TypeName));
-                domains.Add(domain);
+                PrintUsage(distinctScenarios,distinctImplementations);
+                return;
             }
 
-            foreach (PerfTest plugin in plugins)
-            {
-                //plugin.Initialize(host);
-                //plugin.SaySomething();
-                //plugin.CallBackToHost();
+            uint? scenarioIndex = ReadArg(0, args);
+            uint? implementationIndex = ReadArg(1, args);
+            uint? runs = ReadArg(2, args);
 
-                var testRun = plugin.CreateTestRun(0, 4);
-                testRun.Run();
+            
 
-                // To prove that the sandbox security is working we can call a plugin method that does something
-                // dangerous, which throws an exception because the plugin assembly has insufficient permissions.
-                //plugin.DoSomethingDangerous();
-            }
+            PrintMenu("Scenarios", distinctScenarios);
+            ScenarioTypeAttribute scenario = ReadMenuChoice("Scenario", distinctScenarios, scenarioIndex);
+            Console.WriteLine(scenario == null ? "All" : scenario.Description);
+            Console.WriteLine();
 
+            PrintMenu("Implementations", distinctImplementations);
+            ImplementationTypeAttribute implementation = ReadMenuChoice("Implementation", distinctImplementations, implementationIndex);
+            Console.WriteLine(implementation == null ? "All" : implementation.Description);
+            Console.WriteLine();
 
+            runs = PromptUint("Runs", 1, 1000, runs);
+            Console.WriteLine(runs);
+            Console.WriteLine();
 
-            //ScenarioType scenarioType;
-            //ImplementationType implementationType;
-            //int runs;
-
-            //if (args == null
-            //    || args.Length <= 3
-            //    || !Enum.TryParse(args[0], out scenarioType)
-            //    || !Enum.TryParse(args[1], out implementationType)
-            //    || !int.TryParse(args[2], out runs)
-            //    )
-            //{
-            //    PrintUsage();
-            //    return;
-            //}
-
-            //Console.WriteLine(new ComputerSpecifications().ToString());
-
-            //var session = new PerformanceTestSession(scenarioType, implementationType, runs);
-
-            //Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.AboveNormal;
-
-            //session.Run();
-
-            //session.GenerateAndOpenReport();
+            var config = new Config(scenario, implementation, runs.Value, distinctScenarios, distinctImplementations, types, pluginPath);
+            Console.WriteLine(new ComputerSpecifications().ToString());
+            var session = new PerformanceTestSession(config);
+            Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.AboveNormal;
+            session.Run();
+            session.GenerateAndOpenReport();
             Console.ReadKey();
         }
 
-        /// <summary>
-        /// Returns a new <see cref="AppDomain"/> according to the specified criteria.
-        /// Based on Tim Coulter's work: http://stackoverflow.com/questions/4145713/looking-for-a-practical-approach-to-sandboxing-net-plugins
-        /// </summary>
-        /// <param name="name">The name to be assigned to the new instance.</param>
-        /// <param name="path">The root folder path in which assemblies will be resolved.</param>
-        /// <param name="zone">A <see cref="SecurityZone"/> that determines the permission set to be assigned to this instance.</param>
-        /// <returns></returns>
-        public static AppDomain CreateSandboxDomain(
-            string name,
-            string path,
-            SecurityZone zone)
+        private static uint? ReadArg(int index, params string[] args)
         {
-            var setup = new AppDomainSetup { ApplicationBase = Path.GetFullPath(path) };
+            uint argValue;
+            
+            if (!uint.TryParse(args.Skip(index).Take(1).FirstOrDefault(), out argValue))
+            {
+                return null;
+            }
 
-            var evidence = new Evidence();
-            evidence.AddHostEvidence(new Zone(zone));
-            var permissions = SecurityManager.GetStandardSandbox(evidence);
-
-            var strongName = typeof(Program).Assembly.Evidence.GetHostEvidence<StrongName>();
-
-            return AppDomain.CreateDomain(name, null, setup, permissions, strongName);
+            return argValue;
         }
 
+        private static void PrintMenu<T>(string title, IList<T> attribs) where T : PerfTestAttribute
+        {
+            Console.WriteLine(title + ":");
+            Console.WriteLine();
+            Console.WriteLine("0 - All");
 
-        private static void PrintUsage()
+            for (int i = 1; i < attribs.Count + 1; i++)
+            {
+                Console.WriteLine(i + " - " + attribs[i - 1].Description);
+            }
+
+            Console.WriteLine();
+        }
+
+        private static T ReadMenuChoice<T>(string prompt, IList<T> attribs, uint? arg = null) where T : PerfTestAttribute
+        {
+            var choice = PromptUint(prompt, 0, (uint) attribs.Count, arg);
+            return choice == 0 ? null : attribs[(int) (choice - 1)];
+        }
+
+        private static uint PromptUint(string prompt, uint min, uint max, uint? arg = null)
+        {
+            while (true)
+            {
+                Console.Write(prompt + ": ");
+
+                if (arg.HasValue && arg >= min && arg <= max)
+                {
+                    Console.WriteLine(arg);
+                    return arg.Value;
+                }
+                
+                string entryString = (Console.ReadLine() ?? "").Trim();
+                uint entryUint;
+
+                if (uint.TryParse(entryString, out entryUint) && entryUint >= min && entryUint <= max)
+                {
+                    return entryUint;
+                }
+
+
+                Console.WriteLine("Invalid entry.  Please choose valid {0} between {1} and {2}.", prompt, min, max);
+            }
+        }
+
+        private static void PrintUsage(ScenarioTypeAttribute[] distinctScenarios, ImplementationTypeAttribute[] distinctImplementations)
         {
             Console.WriteLine("Usage: Disruptor.PerfTests Scenario Implementation Runs");
             Console.WriteLine();
-            PrintEnum(typeof(ScenarioType));
+            PrintMenu("Scenarios", distinctScenarios);
             Console.WriteLine();
-            PrintEnum(typeof(ImplementationType));
+            PrintMenu("Implementations", distinctImplementations);
             Console.WriteLine();
             Console.WriteLine("Runs: number of test run to do for each scenario and implementation");
             Console.WriteLine();
             Console.WriteLine("Example: Disruptor.PerfTests 0 0 3");
             Console.WriteLine("will run all performance test scenarios for all implementations 3 times.");
-        }
-
-        private static void PrintEnum(Type enumType)
-        {
-            var names = Enum.GetNames(enumType);
-            var values = Enum.GetValues(enumType);
-
-            Console.WriteLine(enumType.Name + " options:");
-
-            for (var i = 0; i < names.Length; i++)
-            {
-                var name = names[i];
-                var value = (int)values.GetValue(i);
-                Console.WriteLine(" - {0} ({1})", value, name);
-            }
         }
     }
 }

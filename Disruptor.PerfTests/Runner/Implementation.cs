@@ -1,32 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Security;
+using System.Security.Policy;
 using System.Text;
 using PerfTestRunner.Common;
 using PerfTestRunner.Common.Runner;
 
 namespace Disruptor.PerfTests.Runner
 {
-    public class Implementation
+    internal class Implementation : IDisposable
     {
         private readonly string _scenarioName;
         private readonly string _implementationName;
         private readonly IList<TestRun> _testRuns = new List<TestRun>();
-        
-        public Implementation(string scenarioName, string implementationName, int runs, int numberOfCores)
-        {
-            _scenarioName = scenarioName;
-            _implementationName = implementationName;
-            var ns = "Disruptor.PerfTests." + scenarioName;
-            var className = scenarioName + implementationName + "PerfTest";
-            var classFullName = ns + "." + className;
+        private readonly AppDomain _domain;
 
-            // TODO: What if this comes back null (because the type doesn't exist?)
-            var perfTestType = Type.GetType(classFullName);
-            
-            for (int i = 0; i < runs; i++)
+        public Implementation(ScenarioTypeAttribute scenario, ImplementationTypeAttribute implementation, int runs, int numberOfCores, Config config)
+        {
+            _scenarioName = scenario.Description;
+            _implementationName = implementation.Description;
+            var type = config.Groups[scenario][implementation];
+            _domain = CreateSandboxDomain("Sandbox Domain", config.PluginPath, SecurityZone.Internet);
+
+            for (int i = 0; i < config.Runs; i++)
             {
-                var perfTest = (PerfTest)Activator.CreateInstance(perfTestType);
-                _testRuns.Add(perfTest.CreateTestRun(i, numberOfCores));
+                var perfTest = (PerfTest)_domain.CreateInstanceAndUnwrap(type.AssemblyName, type.TypeName);
+                _testRuns.Add(perfTest.CreateTestRun(i,numberOfCores));
             }
         }
 
@@ -47,6 +47,38 @@ namespace Disruptor.PerfTests.Runner
                 sb.AppendLine("                <td>" + _implementationName + "</td>");
                 testRun.AppendResultHtml(sb);
                 sb.AppendLine("            </tr>");
+            }
+        }
+
+        /// <summary>
+        /// Returns a new <see cref="AppDomain"/> according to the specified criteria.
+        /// Based on Tim Coulter's work: http://stackoverflow.com/questions/4145713/looking-for-a-practical-approach-to-sandboxing-net-plugins
+        /// </summary>
+        /// <param name="name">The name to be assigned to the new instance.</param>
+        /// <param name="path">The root folder path in which assemblies will be resolved.</param>
+        /// <param name="zone">A <see cref="SecurityZone"/> that determines the permission set to be assigned to this instance.</param>
+        /// <returns></returns>
+        private AppDomain CreateSandboxDomain(
+            string name,
+            string path,
+            SecurityZone zone)
+        {
+            var setup = new AppDomainSetup { ApplicationBase = Path.GetFullPath(path) };
+
+            var evidence = new Evidence();
+            evidence.AddHostEvidence(new Zone(zone));
+            var permissions = SecurityManager.GetStandardSandbox(evidence);
+
+            var strongName = typeof(Program).Assembly.Evidence.GetHostEvidence<StrongName>();
+
+            return AppDomain.CreateDomain(name, null, setup, permissions, strongName);
+        }
+
+        public void Dispose()
+        {
+            if (_domain != null)
+            {
+                AppDomain.Unload(_domain);
             }
         }
     }

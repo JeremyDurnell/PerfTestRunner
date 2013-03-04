@@ -2,38 +2,40 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace Disruptor.PerfTests.Runner
 {
-    public class PerformanceTestSession
+    internal class PerformanceTestSession
     {
-        private readonly ScenarioType _scenarioType;
-        private readonly ImplementationType _implementationType;
-        private readonly int _runs;
+        private readonly string _scenarioType;
+        private readonly string _implementationType;
+        private readonly uint _runs;
         private readonly IList<Scenario> _scenarios = new List<Scenario>();
         private readonly ComputerSpecifications _computerSpecifications;
 
-        public PerformanceTestSession(ScenarioType scenarioType, ImplementationType implementationType, int runs)
+        public PerformanceTestSession(Config config)
         {
-            _scenarioType = scenarioType;
-            _implementationType = implementationType;
-            _runs = runs;
             _computerSpecifications = new ComputerSpecifications();
-            Console.WriteLine("Scenario={0}, Implementation={1}, Runs={2}", scenarioType, implementationType, runs);
+            _runs = config.Runs;
+            _scenarioType = config.Scenario == null ? "All" : config.Scenario.Description;
+            _implementationType = config.Implementation == null ? "All" : config.Implementation.Description;
 
-            if (scenarioType == ScenarioType.All)
+            Console.WriteLine("Scenario={0}, Implementation={1}, Runs={2}"
+                , _scenarioType
+                , _implementationType
+                , config.Runs);
+            
+            if (config.Scenario == null)
             {
-                foreach (var scenarioName in Enum.GetNames(typeof(ScenarioType)).Where(s => s != "All"))
+                foreach (var scenario in config.KnownScenarios)
                 {
-                    _scenarios.Add(new Scenario(scenarioName, implementationType, runs, _computerSpecifications.NumberOfCores));
+                    _scenarios.Add(new Scenario(scenario,_computerSpecifications.NumberOfCores, config));
                 }
             }
             else
             {
-                string scenarioName = scenarioType.ToString();
-                _scenarios.Add(new Scenario(scenarioName, implementationType, runs, _computerSpecifications.NumberOfCores));
+               _scenarios.Add(new Scenario(config.Scenario, _computerSpecifications.NumberOfCores, config));
             }
         }
 
