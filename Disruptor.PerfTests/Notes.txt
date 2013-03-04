@@ -1,4 +1,0 @@
-﻿ComputerSpecifications depends on System.Management
-Tests depend on NUnit
-
-Disruptor.PerfTests.UniCast1P1C.UniCast1P1CDisruptorPerfTest
