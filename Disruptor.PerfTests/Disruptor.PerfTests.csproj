@@ -36,6 +36,12 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\DO_NOT_USE_IN_PRODUCTION.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
@@ -62,6 +68,7 @@
     <Compile Include="Runner\Implementation.cs" />
     <Compile Include="Runner\ImplementationType.cs" />
     <Compile Include="Runner\PerformanceTestSession.cs" />
+    <Compile Include="Runner\PluginFinder.cs" />
     <Compile Include="Runner\Scenario.cs" />
     <Compile Include="Runner\ScenarioType.cs" />
     <Compile Include="Support\FunctionStep.cs" />
@@ -80,6 +87,9 @@
     <Content Include="Notes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\DO_NOT_USE_IN_PRODUCTION.snk">
+      <Link>DO_NOT_USE_IN_PRODUCTION.snk</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

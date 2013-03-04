@@ -30,6 +30,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\DO_NOT_USE_IN_PRODUCTION.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,6 +56,11 @@
     <Compile Include="Runner\TestRun.cs" />
     <Compile Include="Runner\ThroughputTestRun.cs" />
     <Compile Include="ThroughputPerfTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\DO_NOT_USE_IN_PRODUCTION.snk">
+      <Link>DO_NOT_USE_IN_PRODUCTION.snk</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

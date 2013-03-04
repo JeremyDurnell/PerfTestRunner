@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 
 namespace PerfTestRunner.Common.Runner
 {
+    [Serializable]
     public sealed class LatencyTestRun : TestRun
     {
         private readonly LatencyPerfTest _latencyPerfTest;

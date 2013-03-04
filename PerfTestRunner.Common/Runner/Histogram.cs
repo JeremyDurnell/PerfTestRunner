@@ -10,6 +10,7 @@ namespace PerfTestRunner.Common.Runner
     /// This class is useful for recording timings in nanoseconds across a large number of observations
     /// when high performance is required.
     /// </summary>
+    [Serializable]
     public class Histogram
     {
         private readonly long[] _upperBounds;

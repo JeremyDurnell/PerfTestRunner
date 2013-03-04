@@ -1,8 +1,9 @@
+using System;
 using PerfTestRunner.Common.Runner;
 
 namespace PerfTestRunner.Common
 {
-    public abstract class PerfTest
+    public abstract class PerfTest : MarshalByRefObject
     {
         protected PerfTest(int iterations)
         {

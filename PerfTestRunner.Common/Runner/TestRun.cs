@@ -1,7 +1,9 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace PerfTestRunner.Common.Runner
 {
+    [Serializable]
     public abstract class TestRun
     {
         private readonly PerfTest _perfTest;

@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerfTestRunner.Demo", "Perf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerfTestRunner.Common", "PerfTestRunner.Common\PerfTestRunner.Common.csproj", "{E59D95A2-B60B-404A-A176-3C11B7A4CED9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{253B8215-342F-437E-B76F-33823DD4C73A}"
+	ProjectSection(SolutionItems) = preProject
+		DO_NOT_USE_IN_PRODUCTION.snk = DO_NOT_USE_IN_PRODUCTION.snk
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

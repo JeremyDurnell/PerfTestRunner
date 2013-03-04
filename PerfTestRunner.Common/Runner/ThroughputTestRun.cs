@@ -4,6 +4,7 @@ using System.Text;
 
 namespace PerfTestRunner.Common.Runner
 {
+    [Serializable]
     internal class ThroughputTestRun : TestRun
     {
         private readonly ThroughputPerfTest _throughputPerfTest;
