@@ -66,9 +66,6 @@
     <Compile Include="Runner\Scenario.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Notes.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\DO_NOT_USE_IN_PRODUCTION.snk">
       <Link>DO_NOT_USE_IN_PRODUCTION.snk</Link>
     </None>
