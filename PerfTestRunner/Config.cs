@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Disruptor.PerfTests.Runner;
 using PerfTestRunner.Common.Runner;
+using PerfTestRunner.Runner;
 
-namespace Disruptor.PerfTests
+namespace PerfTestRunner
 {
     internal class Config
     {

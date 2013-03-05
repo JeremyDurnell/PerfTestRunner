@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Disruptor.PerfTests.Runner;
 using PerfTestRunner.Common.Runner;
+using PerfTestRunner.Runner;
 
-namespace Disruptor.PerfTests
+namespace PerfTestRunner
 {
     public static class Program
     {

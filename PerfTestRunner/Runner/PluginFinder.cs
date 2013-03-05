@@ -6,7 +6,7 @@ using System.Reflection;
 using PerfTestRunner.Common;
 using PerfTestRunner.Common.Runner;
 
-namespace Disruptor.PerfTests.Runner
+namespace PerfTestRunner.Runner
 {
     /// <summary>
     /// Safely identifies assemblies within a designated plugin directory that contain qualifying plugin types.

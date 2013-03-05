@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{01867102-B509-4001-8F03-0CA48FEBDF7A}</ProjectGuid>
+    <ProjectGuid>{45E77DFE-1E07-4181-8678-91FE61C87EA6}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Disruptor.PerfTests</RootNamespace>
-    <AssemblyName>Disruptor.PerfTests</AssemblyName>
+    <RootNamespace>PerfTestRunner</RootNamespace>
+    <AssemblyName>PerfTestRunner</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -43,9 +43,6 @@
     <AssemblyOriginatorKeyFile>..\DO_NOT_USE_IN_PRODUCTION.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
@@ -69,7 +66,6 @@
     <None Include="..\DO_NOT_USE_IN_PRODUCTION.snk">
       <Link>DO_NOT_USE_IN_PRODUCTION.snk</Link>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PerfTestRunner.Common\PerfTestRunner.Common.csproj">

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Disruptor.PerfTests.Runner
+namespace PerfTestRunner.Runner
 {
     internal class PerformanceTestSession
     {
