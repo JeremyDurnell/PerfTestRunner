@@ -11,13 +11,33 @@ namespace Disruptor.PerfTests
     {
         static void Main(string[] args)
         {
-            string pluginPath = @"C:\temp2\Disruptor.PerfTests\PerfTestRunner.Demo\bin\Debug";
+            string pluginPath = null;
+
+            bool helpMode = args != null && args.Length > 0 && char.ToLowerInvariant(args[0][0]) == 'h';
+
+            if (helpMode)
+            {
+                if (args.Length > 1)
+                {
+                    pluginPath = args[1];
+                }
+                else
+                {
+                    PrintUsage(null, null);
+                    return;
+                }
+            }
+            else if (args != null && args.Length > 3)
+            {
+                pluginPath = args[3];
+            }
+
             IList<TypeLocator> types = PluginFinder.FindPlugins(pluginPath).ToList();
             var distinctAttributes = types.SelectMany(t => t.Attributes).Distinct().ToArray();
             var distinctScenarios = distinctAttributes.Where(a => a is ScenarioTypeAttribute).Cast<ScenarioTypeAttribute>().ToArray();
             var distinctImplementations = distinctAttributes.Where(a => a is ImplementationTypeAttribute).Cast<ImplementationTypeAttribute>().ToArray();
 
-            if (args != null && args.Length > 0 && (char.ToLowerInvariant(args[0][0]) == 'h'))
+            if (helpMode)
             {
                 PrintUsage(distinctScenarios,distinctImplementations);
                 return;
@@ -26,8 +46,6 @@ namespace Disruptor.PerfTests
             uint? scenarioIndex = ReadArg(0, args);
             uint? implementationIndex = ReadArg(1, args);
             uint? runs = ReadArg(2, args);
-
-            
 
             PrintMenu("Scenarios", distinctScenarios);
             ScenarioTypeAttribute scenario = ReadMenuChoice("Scenario", distinctScenarios, scenarioIndex);
@@ -111,15 +129,20 @@ namespace Disruptor.PerfTests
 
         private static void PrintUsage(ScenarioTypeAttribute[] distinctScenarios, ImplementationTypeAttribute[] distinctImplementations)
         {
-            Console.WriteLine("Usage: Disruptor.PerfTests Scenario Implementation Runs");
+            Console.WriteLine("Usage: Disruptor.PerfTests Scenario Implementation Runs Path");
             Console.WriteLine();
-            PrintMenu("Scenarios", distinctScenarios);
-            Console.WriteLine();
-            PrintMenu("Implementations", distinctImplementations);
-            Console.WriteLine();
-            Console.WriteLine("Runs: number of test run to do for each scenario and implementation");
-            Console.WriteLine();
-            Console.WriteLine("Example: Disruptor.PerfTests 0 0 3");
+
+            if (distinctScenarios != null && distinctImplementations != null)
+            {
+                PrintMenu("Scenarios", distinctScenarios);
+                Console.WriteLine();
+                PrintMenu("Implementations", distinctImplementations);
+                Console.WriteLine();
+                Console.WriteLine("Runs: number of test run to do for each scenario and implementation");
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("Example: Disruptor.PerfTests 0 0 3 c:\\PerfTests");
             Console.WriteLine("will run all performance test scenarios for all implementations 3 times.");
         }
     }
