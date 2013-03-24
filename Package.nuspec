@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>PerfTestRunner</id>
+    <version>0.0.1</version>
+    <authors>Jeremy Durnell</authors>
+    <owners>Jeremy Durnell</owners>
+    <projectUrl>https://github.com/JeremyDurnell/PerfTestRunner</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A small framework and runner for .NET performance testing.</description>
+    <tags>test testing tdd framework performance</tags>
+  </metadata>
+</package>

@@ -52,6 +52,7 @@
     <Compile Include="Support\LatencyStepQueueEventProcessor.cs" />
     <Compile Include="Support\ScenarioTypes.cs" />
     <Compile Include="Support\ValueAdditionQueueEventProcessor.cs" />
+    <Compile Include="SampleTests.cs" />
     <Compile Include="UniCast1P1C\AbstractUniCast1P1CPerfTest.cs" />
     <Compile Include="UniCast1P1C\UniCast1P1CBlockingCollectionPerfTest.cs" />
   </ItemGroup>
@@ -64,6 +65,7 @@
       <Name>PerfTestRunner.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

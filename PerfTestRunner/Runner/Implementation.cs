@@ -21,6 +21,13 @@ namespace PerfTestRunner.Runner
             _scenarioName = scenario.Description;
             _implementationName = implementation.Description;
             var type = config.Groups[scenario][implementation];
+
+            // HACK: shouldn't add combinations that don't exist
+            if (type == null)
+            {
+                return;
+            }
+
             _domain = CreateSandboxDomain("Sandbox Domain", config.PluginPath, SecurityZone.Internet);
 
             for (int i = 0; i < config.Runs; i++)

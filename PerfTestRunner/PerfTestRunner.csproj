@@ -66,6 +66,7 @@
     <None Include="..\DO_NOT_USE_IN_PRODUCTION.snk">
       <Link>DO_NOT_USE_IN_PRODUCTION.snk</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PerfTestRunner.Common\PerfTestRunner.Common.csproj">
