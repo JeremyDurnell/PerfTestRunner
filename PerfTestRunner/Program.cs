@@ -1,4 +1,6 @@
-﻿using System;
+﻿// TODO: make output directory configurable - or just move it to /output
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;

@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{253B8215-342F-437E-B76F-33823DD4C73A}"
 	ProjectSection(SolutionItems) = preProject
 		DO_NOT_USE_IN_PRODUCTION.snk = DO_NOT_USE_IN_PRODUCTION.snk
+		Package.nuspec = Package.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerfTestRunner", "PerfTestRunner\PerfTestRunner.csproj", "{45E77DFE-1E07-4181-8678-91FE61C87EA6}"
