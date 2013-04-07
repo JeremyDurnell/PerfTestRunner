@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using PerfTestRunner.Common;
 using PerfTestRunner.Common.Runner;
@@ -55,30 +54,14 @@ namespace PerfTestRunner.Demo
     [ScenarioType("Latency")]
     public class LatencyDemo : LatencyPerfTest
     {
-        protected static readonly double TicksToNanos = 1000*1000*1000/(double) Stopwatch.Frequency;
-        private static long _stopwatchTimestampCostInNano;
-        private readonly Histogram _histogram;
-
         public LatencyDemo() : base(Million)
-        {
-            _histogram = InitHistogram();
-            _stopwatchTimestampCostInNano = InitStopwatchTimestampCostInNano();
+        {   
         }
 
         //[Test]
         public override int MinimumCoresRequired
         {
             get { return 1; }
-        }
-
-        public override Histogram Histogram
-        {
-            get { return _histogram; }
-        }
-
-        protected static long StopwatchTimestampCostInNano
-        {
-            get { return _stopwatchTimestampCostInNano; }
         }
 
         public override void RunPerformanceTest()
@@ -105,40 +88,6 @@ namespace PerfTestRunner.Demo
                 Histogram.AddObservation(
                     (long) ((Stopwatch.GetTimestamp() - start)*TicksToNanos - StopwatchTimestampCostInNano));
             }
-        }
-
-        private Histogram InitHistogram()
-        {
-            var intervals = new long[31];
-            long intervalUpperBound = 1L;
-            for (int i = 0; i < intervals.Length - 1; i++)
-            {
-                intervalUpperBound *= 2;
-                intervals[i] = intervalUpperBound;
-            }
-
-            intervals[intervals.Length - 1] = long.MaxValue;
-            return new Histogram(intervals);
-        }
-
-        private static long InitStopwatchTimestampCostInNano()
-        {
-            const long iterations = 10*1000*1000;
-            long start = Stopwatch.GetTimestamp();
-            long finish = start;
-
-            for (int i = 0; i < iterations; i++)
-            {
-                finish = Stopwatch.GetTimestamp();
-            }
-
-            if (finish <= start)
-            {
-                throw new Exception();
-            }
-
-            finish = Stopwatch.GetTimestamp();
-            return (long) (((finish - start)/(double) iterations)*TicksToNanos);
         }
     }
 }
