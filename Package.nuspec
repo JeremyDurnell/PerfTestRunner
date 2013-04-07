@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>PerfTestRunner</id>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <authors>Jeremy Durnell</authors>
     <owners>Jeremy Durnell</owners>
     <projectUrl>https://github.com/JeremyDurnell/PerfTestRunner</projectUrl>
