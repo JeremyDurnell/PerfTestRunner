@@ -73,7 +73,7 @@ namespace PerfTestRunner.Runner
         {
             var result = new List<TypeLocator>();
 
-            foreach (var file in Directory.GetFiles(Path.GetFullPath(_pluginPath), "*.dll"))
+            foreach (var file in Directory.GetFiles(Path.GetFullPath(_pluginPath), "*.dll").Concat(Directory.GetFiles(Path.GetFullPath(_pluginPath), "*.exe")))
             {
                 try
                 {
